@@ -24,11 +24,11 @@ fn read_vec() -> Vec<i32> {
 
         match line.trim().parse::<i32>() {
             Ok(num) => {
-                unimplemented!()
+                vec.push(num)
             },
             // We don't care about the particular error, so we ignore it with a `_`.
             Err(_) => {
-                unimplemented!()
+                println!("Ups error!")
             },
         }
     }
@@ -38,13 +38,13 @@ fn read_vec() -> Vec<i32> {
 
 
 // For the rest of the code, we just re-use part 02 by importing it with `use`.
-use part02::{SomethingOrNothing,Something,Nothing,vec_min};
+use part02::{SomethingOrNothing, Something, Nothing, vec_min};
 
 // If you update your `main.rs` to use part 03, `cargo run` should now ask you for some numbers,
 // and tell you the minimum. Neat, isn't it?
 pub fn main() {
     let vec = read_vec();
-    unimplemented!()
+    vec_min(vec).print2()
 }
 
 // **Exercise 03.1**: Define a trait `Print` to write a generic version of `SomethingOrNothing::print`.
@@ -58,11 +58,21 @@ pub fn main() {
 // 
 // *Hint*: There is a macro `print!` for printing without appending a newline.
 pub trait Print {
-    /* Add things here */
+    fn print(self);
 }
+
+impl Print for i32 {
+    fn print(self) {
+        println!("{}", self)
+    }
+}
+
 impl<T: Print> SomethingOrNothing<T> {
     fn print2(self) {
-        unimplemented!()
+        match self {
+            Something(n) => n.print(),
+            Nothing => println!("Nothing!")
+        }
     }
 }
 
