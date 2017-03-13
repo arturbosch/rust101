@@ -11,9 +11,17 @@ enum NumberOrNothing {
     Nothing
 }
 
+// Phew. We wrote our first Rust function! But all this `NumberOrNothing::` is getting kind of
+// ugly. Can't we do that nicer?
+
+// Indeed, we can: The following line tells Rust to take
+// the constructors of `NumberOrNothing` into the local namespace.
+// Try moving that above the function, and removing all the occurrences of `NumberOrNothing::`.
+use self::NumberOrNothing::{Number, Nothing};
+
 // Observe how in Rust, the return type comes *after* the arguments.
 fn vec_min(vec: Vec<i32>) -> NumberOrNothing {
-    let mut min = NumberOrNothing::Nothing;
+    let mut min = Nothing;
 
     // Now we want to *iterate* over the list. Rust has some nice syntax for iterators:
     for el in vec {
@@ -21,12 +29,12 @@ fn vec_min(vec: Vec<i32>) -> NumberOrNothing {
         // number in there? This is what pattern matching can do:
         match min {
             // In this case (*arm*) of the `match`, `min` is currently nothing, so let's just make it the number `el`.
-            NumberOrNothing::Nothing => {
+            Nothing => {
                 min = Number(el)
             },
             // In this arm, `min` is currently the number `n`, so let's compute the new minimum and store it.
-            NumberOrNothing::Number(n) => {
-                min = min_i32(el, n)
+            Number(n) => {
+                min = Number(min_i32(el, n))
             }
         }
     }
@@ -37,31 +45,26 @@ fn vec_min(vec: Vec<i32>) -> NumberOrNothing {
 // Now that we reduced the problem to computing the minimum of two integers, let's do that.
 fn min_i32(a: i32, b: i32) -> i32 {
     if a < b {
-        unimplemented!()
+        return a
     } else {
-        unimplemented!()
+        return b
     }
 }
-
-// Phew. We wrote our first Rust function! But all this `NumberOrNothing::` is getting kind of
-// ugly. Can't we do that nicer?
-
-// Indeed, we can: The following line tells Rust to take
-// the constructors of `NumberOrNothing` into the local namespace.
-// Try moving that above the function, and removing all the occurrences of `NumberOrNothing::`.
-use self::NumberOrNothing::{Number,Nothing};
 
 // To call this function, we now just need a list. Of course, ultimately we want to ask the user for
 // a list of numbers, but for now, let's just hard-code something.
 
 fn read_vec() -> Vec<i32> {
-    unimplemented!()
+    vec![10, 1, 22, 3, 24, 5, 6, 7, 8, 9]
 }
 
 // Of course, we would also like to actually see the result of the computation, so we need to print the result.
 
 fn print_number_or_nothing(n: NumberOrNothing) {
-    unimplemented!()
+    match n {
+        Nothing => println!("Nothing!"),
+        Number(number) => println!("{}", number)
+    }
 }
 
 // Putting it all together:
