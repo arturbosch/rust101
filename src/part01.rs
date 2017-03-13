@@ -69,12 +69,36 @@ fn read_vec() -> Vec<i32> {
 pub fn main() {
     let vec = read_vec();
     let min = vec_min(vec);
-    min.print()
+    min.print();
+
+    let vec2 = read_vec();
+    vec_sum(vec2).print();
+
+    let v = read_vec();
+    print(v);
 }
 // You will have to replace `part00` by `part01` in the `main` function in
 // `main.rs` to run this code.
 
 // **Exercise 01.1**: Write a function `vec_sum` that computes the sum of all values of a `Vec<i32>`.
 
+fn vec_sum(v: Vec<i32>) -> NumberOrNothing {
+    let mut sum = Nothing;
+    for e in v {
+        sum = match sum {
+            Nothing => Number(e),
+            Number(n) => Number(e + n)
+        }
+    }
+    sum
+}
+
 // **Exercise 01.2**: Write a function `vec_print` that takes a vector and prints all its elements.
+fn print(v: Vec<i32>) {
+    let mut s = "".to_string();
+    for e in v {
+        s = if s.is_empty() { format!("{}", e) } else { format!("{}, {}", s, e) };
+    }
+    println!("Vector[{}{}", s, "]")
+}
 
