@@ -16,7 +16,9 @@ enum NumberOrNothing {
     Number(i32),
     Nothing
 }
-use self::NumberOrNothing::{Number,Nothing};
+
+use self::NumberOrNothing::{Number, Nothing};
+
 fn number_or_default(n: NumberOrNothing, default: i32) -> i32 {
     match n {
         Nothing => default,
@@ -26,19 +28,22 @@ fn number_or_default(n: NumberOrNothing, default: i32) -> i32 {
 
 // It is even the case that blocks are expressions, evaluating to the last expression they contain.
 fn compute_stuff(x: i32) -> i32 {
-    let y = { let z = x*x; z + 14 };
-    y*y
+    let y = {
+        let z = x * x;
+        z + 14
+    };
+    y * y
 }
 
 // Let us now refactor `vec_min`.
 fn vec_min(v: Vec<i32>) -> NumberOrNothing {
     fn min_i32(a: i32, b: i32) -> i32 {
-        unimplemented!()
+        if a < b { a } else { b }
     }
 
     let mut min = Nothing;
     for e in v {
-        unimplemented!()
+        min = Number(min_i32(e, number_or_default(min, e)))
     }
     min
 }
@@ -58,12 +63,13 @@ impl NumberOrNothing {
 
 // With our refactored functions and methods, `main` now looks as follows:
 fn read_vec() -> Vec<i32> {
-    vec![18,5,7,2,9,27]
+    vec![18, 5, 7, 2, 9, 27]
 }
+
 pub fn main() {
     let vec = read_vec();
     let min = vec_min(vec);
-    unimplemented!()
+    min.print()
 }
 // You will have to replace `part00` by `part01` in the `main` function in
 // `main.rs` to run this code.
